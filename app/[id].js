@@ -15,23 +15,24 @@ import { HeartFilledIcon, HeartIcon } from "../components/Icons";
 import { Context } from "../Context";
 
 export default function Detail() {
-  const { gameslug } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
   const [gameInfo, setGameInfo] = useState(null);
   const { favGames, setFavGames } = useContext(Context);
   const [isFav, setIsFav] = useState(false);
 
+
   useEffect(() => {
-    if (!gameslug) return;
-    getGameDetails(gameslug)
+    if (!id) return;
+    getGameDetails(id)
       .then((game) => setGameInfo(game))
       .catch((err) => console.log(err));
-  }, [gameslug]);
+  }, [id]);
 
   useEffect(() => {
     let isFav = false;
     if (favGames.length > 0) {
       favGames.forEach((game) => {
-        if (game.slug === gameslug) isFav = true;
+        if (game.slug === id) isFav = true;
       });
     }
     setIsFav(isFav);
@@ -57,7 +58,7 @@ export default function Detail() {
         onPress={() => {
           if (!gameInfo) return;
           setIsFav(false);
-          setFavGames((prev) => prev.filter((prev) => prev.slug !== gameslug));
+          setFavGames((prev) => prev.filter((prev) => prev.slug !== id));
         }}
       >
         <HeartFilledIcon />
@@ -71,7 +72,7 @@ export default function Detail() {
         options={{
           headerStyle: { backgroundColor: "#ffee00" },
           headerTintColor: "black",
-          headerLeft: () => {},
+          headerLeft: () => { },
           headerRight: () => (isFav ? <DislikeButton /> : <LikeButton />),
           headerTitle: gameInfo?.title ? gameInfo.title : "",
         }}
