@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "template-blank",
-    "slug": "template-blank",
+    "name": "metacritic",
+    "slug": "metacritic",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "metacritic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
