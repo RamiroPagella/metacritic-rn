@@ -1,5 +1,10 @@
 import { Tabs } from "expo-router";
-import { HeartFilledIcon, HomeIcon, InfoIcon } from "../../components/Icons";
+import {
+  HeartFilledIcon,
+  HomeIcon,
+  InfoIcon,
+  ProfileIcon,
+} from "../../components/Icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabsLayout() {
@@ -30,10 +35,10 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="about"
+        name="profile"
         options={{
-          title: "About",
-          tabBarIcon: ({ color }) => <InfoIcon color={color} />,
+          title: "Profile",
+          tabBarIcon: ({ color }) => <ProfileIcon color={color} />,
         }}
       />
     </Tabs>

@@ -1,25 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  View,
-  ScrollView,
-  ActivityIndicator,
-  Pressable,
-  Text,
-  FlatList,
-  Animated,
-  TextInput,
-} from "react-native";
-import { useEffect, useReducer, useState, useContext } from "react";
-import { getLatestGames } from "../lib/metacritic";
-import { Logo } from "./Logo";
-import { AnimatedGameCard } from "./GameCard";
-import { Link } from "expo-router";
-import { CircleInfoIcon, SearchIcon } from "./Icons";
-import Screen from "./Screen";
-import { Context } from "../Context";
+import { View, ActivityIndicator, FlatList, TextInput } from "react-native";
+import { useEffect, useState, useContext } from "react";
+import { getLatestGames } from "../../lib/metacritic";
+import { AnimatedGameCard } from "../../components/GameCard";
+import { SearchIcon } from "../../components/Icons";
+import Screen from "../../components/Screen";
+import { Context } from "../../Context";
 import { useDebouncedCallback } from "use-debounce";
 
-export default function Main() {
+export default function Index() {
   const { searchValue, setSearchValue } = useContext(Context);
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -33,6 +21,10 @@ export default function Main() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  useEffect(() => {
+    handleSearch(searchValue);
+  }, [searchValue]);
 
   const handleSearch = useDebouncedCallback((string) => {
     setLoading(true);
@@ -50,15 +42,11 @@ export default function Main() {
       .finally(() => setLoading(false));
   }, 300);
 
-  useEffect(() => {
-    handleSearch(searchValue);
-  }, [searchValue]);
-
   return (
     <Screen>
       <View className="h-12 justify-center mb-2">
         <TextInput
-          className="rounded-full bg-white/10 flex-1 text-white pl-10"
+          className="rounded-full bg-white/10 h-12 text-white pl-10"
           value={searchValue}
           onChangeText={(e) => {
             setSearchValue(e);
@@ -68,7 +56,7 @@ export default function Main() {
       </View>
 
       {loading ? (
-        <View className="flex-1 justify-center"> 
+        <View className="flex-1 justify-center">
           <ActivityIndicator />
         </View>
       ) : (

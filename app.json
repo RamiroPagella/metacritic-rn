@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "metacritic",
-    "slug": "metacritic",
+    "name": "GameZone",
+    "slug": "GameZone",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "scheme": "metacritic",
+    "scheme": "gamezone",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

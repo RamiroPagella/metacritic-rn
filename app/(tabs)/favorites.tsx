@@ -9,18 +9,18 @@ export default function Favorites() {
 
   return (
     <Screen>
-      {
-        favGames.length ? (
-          <FlatList
-            data={favGames}
-            renderItem={({ item, index }) => (
-              <AnimatedGameCard game={item} index={index} />
-            )}
-          />
-
-        ) : <Text className="text-white text-center">No hay elementos en favoritos.</Text>
-      }
-
+      {favGames.length ? (
+        <FlatList
+          data={favGames}
+          renderItem={({ item, index }) => (
+            <AnimatedGameCard game={item} index={index} />
+          )}
+        />
+      ) : (
+        <Text className="text-white text-center">
+          No hay elementos en favoritos.
+        </Text>
+      )}
     </Screen>
   );
 }

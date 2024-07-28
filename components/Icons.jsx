@@ -1,5 +1,6 @@
 import { AntDesign, Feather } from "@expo/vector-icons";
 import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export const CircleInfoIcon = (props) => {
   return <FontAwesome6 name="circle-info" color="white" size={30} {...props} />;
@@ -23,4 +24,8 @@ export const HeartIcon = (props) => {
 
 export const HeartFilledIcon = (props) => {
   return <AntDesign name="heart" size={24} {...props} />;
+};
+
+export const ProfileIcon = (props) => {
+  return <MaterialCommunityIcons name="account" size={24} {...props} />;
 };

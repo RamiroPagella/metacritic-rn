@@ -20,7 +20,6 @@ export default function Detail() {
   const { favGames, setFavGames } = useContext(Context);
   const [isFav, setIsFav] = useState(false);
 
-
   useEffect(() => {
     if (!id) return;
     getGameDetails(id)
@@ -72,7 +71,7 @@ export default function Detail() {
         options={{
           headerStyle: { backgroundColor: "#ffee00" },
           headerTintColor: "black",
-          headerLeft: () => { },
+          headerLeft: () => {},
           headerRight: () => (isFav ? <DislikeButton /> : <LikeButton />),
           headerTitle: gameInfo?.title ? gameInfo.title : "",
         }}
