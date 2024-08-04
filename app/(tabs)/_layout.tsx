@@ -2,13 +2,31 @@ import { Tabs } from "expo-router";
 import {
   HeartFilledIcon,
   HomeIcon,
-  InfoIcon,
+  PlusIcon,
   ProfileIcon,
 } from "../../components/Icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useAppContext } from "../../Context";
+import { useEffect } from "react";
+import { supabase } from "../../lib/supabase";
 
 export default function TabsLayout() {
-  const { bottom } = useSafeAreaInsets();
+  const { setSession, setUser } = useAppContext();
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      console.log("event del onAuthStateChange", event);
+      console.log(JSON.stringify(session, null, 2));
+
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        setSession(session);
+        setUser(session?.user);
+      }
+      if (event === "SIGNED_OUT") {
+        setSession(null);
+        setUser(null);
+      }
+    });
+  }, []);
 
   return (
     <Tabs
@@ -31,6 +49,14 @@ export default function TabsLayout() {
         options={{
           title: "Favorites",
           tabBarIcon: ({ color }) => <HeartFilledIcon color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="new-game"
+        options={{
+          title: "New",
+          tabBarIcon: ({ color }) => <PlusIcon color={color} />,
         }}
       />
 

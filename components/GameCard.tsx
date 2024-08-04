@@ -2,14 +2,15 @@ import { View, Image, Text, Animated, Pressable } from "react-native";
 import { useRef, useEffect } from "react";
 import Score from "./Score";
 import { Link } from "expo-router";
+import { Game } from "@/lib/types";
 
-export function GameCard({ game }) {
+export function GameCard({ game }: {game: Game}) {
   return (
-    <Link href={`/${game.slug}`} asChild className="mx-auto mt-2">
+    <Link href={`/${game.id}`} asChild className="mx-auto mt-2">
       <Pressable className="rounded-xl bg-white/10 p-3 items-center justify-center flex-row border active:bg-white/20 active:border-white/40">
         <View className="mr-4">
           <Image
-            source={{ uri: game.image || game.img }}
+            source={{ uri: game.image }}
             className="w-[107px] h-[147px] rounded-xl"
           />
         </View>

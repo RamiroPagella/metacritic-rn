@@ -1,68 +1,37 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
-import {
-  View,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-  Image,
-  Pressable,
-} from "react-native";
+import { Stack, useLocalSearchParams } from "expo-router";
+import { View, Text, ScrollView, ActivityIndicator, Image } from "react-native";
 import Screen from "../components/Screen";
-import { useContext, useEffect, useState } from "react";
-import { getGameDetails } from "../lib/metacritic";
+import { useEffect, useState } from "react";
+import { getGameDetails, handleGameLike } from "../lib/utils";
 import Score from "../components/Score";
-import { HeartFilledIcon, HeartIcon } from "../components/Icons";
-import { Context } from "../Context";
+import { useAppContext } from "../Context";
+import { DislikeButton, LikeButton } from "@/components/ui/[id]/Like";
+import { supabase } from "@/lib/supabase";
 
 export default function Detail() {
   const { id } = useLocalSearchParams();
   const [gameInfo, setGameInfo] = useState(null);
-  const { favGames, setFavGames } = useContext(Context);
   const [isFav, setIsFav] = useState(false);
+  const { user } = useAppContext();
 
   useEffect(() => {
     if (!id) return;
-    getGameDetails(id)
-      .then((game) => setGameInfo(game))
+    getGameDetails(id as string)
+      .then((game) => {
+        setGameInfo(game);
+        if (game.likes && game.likes.includes(user.id)) setIsFav(true);
+      })
       .catch((err) => console.log(err));
   }, [id]);
 
-  useEffect(() => {
-    let isFav = false;
-    if (favGames.length > 0) {
-      favGames.forEach((game) => {
-        if (game.slug === id) isFav = true;
-      });
+  const handlePress = async () => {
+    if (!gameInfo) return;
+    try {
+      await handleGameLike(gameInfo.id, user.id);
+      setIsFav(!isFav);
+    } catch (error) {
+      console.log(error);
     }
-    setIsFav(isFav);
-  }, [favGames]);
-
-  const LikeButton = () => {
-    return (
-      <Pressable
-        onPress={() => {
-          if (!gameInfo) return;
-          setIsFav(true);
-          setFavGames((prev) => [...prev, gameInfo]);
-        }}
-      >
-        <HeartIcon />
-      </Pressable>
-    );
-  };
-
-  const DislikeButton = () => {
-    return (
-      <Pressable
-        onPress={() => {
-          if (!gameInfo) return;
-          setIsFav(false);
-          setFavGames((prev) => prev.filter((prev) => prev.slug !== id));
-        }}
-      >
-        <HeartFilledIcon />
-      </Pressable>
-    );
   };
 
   return (
@@ -71,8 +40,14 @@ export default function Detail() {
         options={{
           headerStyle: { backgroundColor: "#ffee00" },
           headerTintColor: "black",
-          headerLeft: () => {},
-          headerRight: () => (isFav ? <DislikeButton /> : <LikeButton />),
+          headerBackVisible: true,
+          headerLeft: () => <></>,
+          headerRight: () =>
+            isFav ? (
+              <DislikeButton handlePress={handlePress} />
+            ) : (
+              <LikeButton handlePress={handlePress} />
+            ),
           headerTitle: gameInfo?.title ? gameInfo.title : "",
         }}
       />
@@ -84,7 +59,7 @@ export default function Detail() {
           <ScrollView>
             <View className="items-center justify-center">
               <Image
-                source={{ uri: gameInfo.img }}
+                source={{ uri: gameInfo.image }}
                 className="rounded mb-4 w-[214px] h-[294]"
               />
 

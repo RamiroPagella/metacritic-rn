@@ -1,11 +1,10 @@
-import { Session, User } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useState } from "react";
+import { Session } from "@supabase/supabase-js";
+import { createContext, useContext, useState } from "react";
+import { User } from "@supabase/supabase-js";
 
 interface ContextType {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-  favGames: any[];
-  setFavGames: React.Dispatch<React.SetStateAction<any[]>>
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User>>;
   session: Session | null;
@@ -16,7 +15,7 @@ export const Context = createContext<ContextType | null>(null);
 
 export const ContextProvider = ({ children }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [favGames, setFavGames] = useState([]);
+  // const [favGames, setFavGames] = useState([]);
   const [user, setUser] = useState<User>(null);
   const [session, setSession] = useState<Session>(null);
 
@@ -25,8 +24,8 @@ export const ContextProvider = ({ children }) => {
       value={{
         searchValue,
         setSearchValue,
-        favGames,
-        setFavGames,
+        // favGames,
+        // setFavGames,
         user,
         setUser,
         session,

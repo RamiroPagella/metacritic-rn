@@ -9,14 +9,13 @@ import {
 import Screen from "../components/Screen";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
-import { Link, useRootNavigationState } from "expo-router";
-import { useAppContext } from "../Context";
+import { Link, router, useRootNavigationState } from "expo-router";
+import { useAppContext, User } from "../Context";
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [username, setUsername] = useState<string>("");
-  const { setSession, setUser } = useAppContext();
 
   const handlePress = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -24,12 +23,8 @@ export default function SignIn() {
       password: password,
     });
 
-    if (data) {
-      console.log(data);
-      setSession(data.session);
-      setUser(data.user);
-    }
     if (error) console.log(error);
+    else router.replace('/(tabs)/profile')
   };
 
   return (
@@ -65,7 +60,7 @@ export default function SignIn() {
 
           <Pressable
             onPress={handlePress}
-            className="self-center border border-white rounded p-2"
+            className="self-center border border-white rounded-full p-2 px-4"
           >
             <Text className="text-white text-xl">Iniciar sesión</Text>
           </Pressable>
