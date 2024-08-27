@@ -4,35 +4,48 @@ import Screen from "../components/Screen";
 import { useEffect, useState } from "react";
 import { getGameDetails, handleGameLike } from "../lib/utils";
 import Score from "../components/Score";
-import { useAppContext } from "../Context";
+import { useAppContext } from "../providers/context";
 import { DislikeButton, LikeButton } from "@/components/ui/[id]/Like";
-import { supabase } from "@/lib/supabase";
 
 export default function Detail() {
   const { id } = useLocalSearchParams();
   const [gameInfo, setGameInfo] = useState(null);
   const [isFav, setIsFav] = useState(false);
   const { user } = useAppContext();
+  const [likeLoading, setLikeLoading] = useState(false);
 
   useEffect(() => {
     if (!id) return;
     getGameDetails(id as string)
       .then((game) => {
         setGameInfo(game);
-        if (game.likes && game.likes.includes(user.id)) setIsFav(true);
+        if (game?.likes?.includes(user?.id)) setIsFav(true);
       })
       .catch((err) => console.log(err));
   }, [id]);
 
   const handlePress = async () => {
     if (!gameInfo) return;
+    if (likeLoading) return;
+    setLikeLoading(true);
     try {
-      await handleGameLike(gameInfo.id, user.id);
+      await handleGameLike(gameInfo?.id, user?.id);
       setIsFav(!isFav);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLikeLoading(false);
     }
   };
+  
+  const headerRight = () => {
+    if (!user) return <></>;
+    return isFav ? (
+      <DislikeButton handlePress={handlePress} />
+    ) : (
+      <LikeButton handlePress={handlePress} />
+    )
+  }
 
   return (
     <Screen>
@@ -42,12 +55,7 @@ export default function Detail() {
           headerTintColor: "black",
           headerBackVisible: true,
           headerLeft: () => <></>,
-          headerRight: () =>
-            isFav ? (
-              <DislikeButton handlePress={handlePress} />
-            ) : (
-              <LikeButton handlePress={handlePress} />
-            ),
+          headerRight,
           headerTitle: gameInfo?.title ? gameInfo.title : "",
         }}
       />

@@ -15,7 +15,6 @@ export const Context = createContext<ContextType | null>(null);
 
 export const ContextProvider = ({ children }) => {
   const [searchValue, setSearchValue] = useState("");
-  // const [favGames, setFavGames] = useState([]);
   const [user, setUser] = useState<User>(null);
   const [session, setSession] = useState<Session>(null);
 
@@ -24,8 +23,6 @@ export const ContextProvider = ({ children }) => {
       value={{
         searchValue,
         setSearchValue,
-        // favGames,
-        // setFavGames,
         user,
         setUser,
         session,

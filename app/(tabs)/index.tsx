@@ -1,4 +1,4 @@
-import { View, ActivityIndicator, FlatList, TextInput } from "react-native";
+import { View, ActivityIndicator, FlatList, TextInput, Text } from "react-native";
 import { useEffect, useState } from "react";
 import { getGames } from "../../lib/utils";
 import { AnimatedGameCard } from "../../components/GameCard";
@@ -17,6 +17,7 @@ export default function Index() {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
+  const [error, setError] = useState<Error | null>(null);
   const [toastId, setToastId] = useState("");
 
   const handleToast = (msg: string) => {
@@ -52,7 +53,8 @@ export default function Index() {
       const data = await getGames(title);
       setGames(data);
     } catch (error) {
-      console.log(error.message);
+      console.log("error del getGames", error.message);
+      setError(error);
       handleToast(error.message);
     } finally {
       setLoading(false);
@@ -69,19 +71,23 @@ export default function Index() {
         <SearchIcon className="absolute ml-2" />
       </View>
 
-      {loading ? (
+      {loading && (
         <View className="flex-1 justify-center">
           <ActivityIndicator />
         </View>
-      ) : (
-        <FlatList
-          data={games}
-          keyExtractor={(game) => game.slug}
-          renderItem={({ item, index }) => {
-            return <AnimatedGameCard game={item} index={index} />;
-          }}
-        ></FlatList>
       )}
+      {!loading &&
+        (error && !games ? (
+          <Text className="text-white">{error.message}</Text>
+        ) : (
+          <FlatList
+            data={games}
+            keyExtractor={(game) => game.slug}
+            renderItem={({ item, index }) => {
+              return <AnimatedGameCard game={item} index={index} />;
+            }}
+          ></FlatList>
+        ))}
     </Screen>
   );
 }

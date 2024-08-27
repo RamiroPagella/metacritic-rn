@@ -7,10 +7,9 @@ import {
   View,
 } from "react-native";
 import Screen from "../components/Screen";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { supabase } from "../lib/supabase";
-import { Link, router, useRootNavigationState } from "expo-router";
-import { useAppContext, User } from "../Context";
+import { Link, router } from "expo-router";
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>("");
@@ -24,12 +23,12 @@ export default function SignIn() {
     });
 
     if (error) console.log(error);
-    else router.replace('/(tabs)/profile')
+    else router.replace("/(tabs)/profile");
   };
 
   return (
     <KeyboardAvoidingView
-      className="flex-1"
+      className="flex-1 bg-black"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Screen className="justify-around items-center">

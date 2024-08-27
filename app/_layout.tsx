@@ -1,11 +1,10 @@
-import { Link, Slot, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import "@/global.css";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
-import { View, Text, Pressable, AppState } from "react-native";
+import { View, AppState } from "react-native";
 import { Logo } from "../components/Logo";
-import { ContextProvider, useAppContext } from "../Context";
 import { supabase } from "../lib/supabase";
-import { useEffect } from "react";
+import Providers from "@/providers";
 
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
@@ -16,10 +15,9 @@ AppState.addEventListener("change", (state) => {
 });
 
 export default function Layout() {
-  
-
   return (
-    <GluestackUIProvider mode="light"><ContextProvider>
+    <GluestackUIProvider mode="light">
+      <Providers>
         <View className="bg-black flex-1">
           <Stack
             screenOptions={{
@@ -30,6 +28,7 @@ export default function Layout() {
             }}
           />
         </View>
-      </ContextProvider></GluestackUIProvider>
+      </Providers>
+    </GluestackUIProvider>
   );
 }

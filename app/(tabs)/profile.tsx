@@ -2,7 +2,7 @@ import { View, Text, Pressable, Image } from "react-native";
 import Screen from "../../components/Screen";
 import { Link } from "expo-router";
 import { useEffect } from "react";
-import { useAppContext } from "../../Context";
+import { useAppContext } from "../../providers/context";
 import { supabase } from "../../lib/supabase";
 
 export default function Profile() {
